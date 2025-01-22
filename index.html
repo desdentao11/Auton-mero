@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona Tu Número De Jugador</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        h1 {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        h2 {
+            display: inline-block;
+            font-size: 14px;
+            color: #555;
+            vertical-align: top;
+        }
+        button {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            background-color: green;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button.rojo {
+            background-color: red;
+        }
+        button.verde {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Selecciona Tu Número De Jugador</h1>
+    <h2>Solo podrás seleccionar un botón, será tu número de jugador. Cuando elijas el número contacta a @desdentao11 (Jugador 456) y dile que número has elegido.</h2>
+
+    <div id="botones"></div>
+
+    <script>
+        const numBotones = 456;
+        const botonesEstado = Array(numBotones).fill(true); // Verdadero = verde, Falso = rojo
+        const esMiSesion = localStorage.getItem('usuario') === 'niketo8112'; // Cambia 'adrian' por tu identificador
+
+        // Crear los botones
+        function crearBotones() {
+            const contenedor = document.getElementById('botones');
+            for (let i = 0; i < numBotones; i++) {
+                const boton = document.createElement('button');
+                boton.id = `boton-${i + 1}`;
+                boton.innerText = i + 1;
+                boton.onclick = () => alternarEstado(i);
+                if (botonesEstado[i]) {
+                    boton.classList.add('verde'); // Todos los botones empiezan verdes
+                }
+                contenedor.appendChild(boton);
+            }
+        }
+
+        // Alternar el estado del botón entre verde y rojo
+        function alternarEstado(indice) {
+            const boton = document.getElementById(`boton-${indice + 1}`);
+
+            // Si es mi sesión, puedo cambiar el botón a verde
+            if (esMiSesion) {
+                if (!botonesEstado[indice]) {
+                    botonesEstado[indice] = true;
+                    boton.classList.remove('rojo');
+                    boton.classList.add('verde');
+                }
+            } else {
+                // Si no es mi sesión, solo puedo cambiarlo a rojo
+                if (botonesEstado[indice]) {
+                    botonesEstado[indice] = false;
+                    boton.classList.remove('verde');
+                    boton.classList.add('rojo');
+                    boton.disabled = true; // Deshabilitar el botón después de hacer clic
+                }
+            }
+        }
+
+        // Inicializar la página con los botones
+        crearBotones();
+    </script>
+</body>
+</html>
