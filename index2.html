@@ -1,0 +1,33 @@
+button.addEventListener("click", () => {
+  const userChanges = localStorage.getItem("userChanged");
+
+  if (userChanges === "true" && button.style.backgroundColor !== "red") {
+    alert("Solo puedes cambiar un botón. No puedes realizar más cambios.");
+    return;
+  }
+
+  if (button.style.backgroundColor === "green") {
+    button.style.backgroundColor = "red";
+    button.classList.add("disabled");
+
+    // Guardar el cambio en el almacenamiento local
+    changesMade.push(i);
+    localStorage.setItem(localStorageKey, JSON.stringify(changesMade));
+    localStorage.setItem("userChanged", "true");
+  } else if (button.style.backgroundColor === "red") {
+    const password = prompt("Introduce la contraseña para cambiarlo de rojo a verde:");
+    if (password === "tuContraseñaSecreta") {
+      button.style.backgroundColor = "green";
+      button.classList.remove("disabled");
+
+      // Eliminar el botón del almacenamiento local
+      const index = changesMade.indexOf(i);
+      if (index > -1) {
+        changesMade.splice(index, 1);
+      }
+      localStorage.setItem(localStorageKey, JSON.stringify(changesMade));
+    } else {
+      alert("Contraseña incorrecta.");
+    }
+  }
+});
